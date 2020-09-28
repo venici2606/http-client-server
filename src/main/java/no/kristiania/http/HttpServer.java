@@ -1,10 +1,13 @@
 package no.kristiania.http;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 public class HttpServer {
+
+    private File contentRoot; // property
 
     public HttpServer(int port) throws IOException {
         //forteller vi java at hver gang en klient connecte seg, så skal de komme til vårt program
@@ -62,5 +65,9 @@ public class HttpServer {
 
         new HttpServer(8080);
 
+    }
+
+    public void setContentRoot(File contentRoot) {
+        this.contentRoot = contentRoot;
     }
 }
