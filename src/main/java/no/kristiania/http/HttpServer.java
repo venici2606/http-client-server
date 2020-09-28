@@ -1,6 +1,7 @@
 package no.kristiania.http;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -50,6 +51,19 @@ public class HttpServer {
             if(queryString.getParameter("body") != null) {
                 body = queryString.getParameter("body");
             }
+        } else { //hvis den ikke finner ? så skal den lete i disk
+            File file = new File(contentRoot, requestTarget);
+            statusCode = "200";
+            String response = "HTTP/1.1 " + statusCode + " OK\r\n" +
+                    "Content-Length: " + file.length() + "\r\n" +
+                    "Content-Type: text/plain\r\n" +
+                    "\r\n";
+
+            //skrive 200, lengden på filen, og skrive ut dette pog overføre til klienten
+            clientSocket.getOutputStream().write(response.getBytes());
+
+            new FileInputStream(file).transferTo(clientSocket.getOutputStream());
+
         }
 
         String response = "HTTP/1.1 " + statusCode + " OK\r\n" +
@@ -63,7 +77,8 @@ public class HttpServer {
 
     public static void main(String[] args) throws IOException {
 
-        new HttpServer(8080);
+        HttpServer server = new HttpServer(8080);
+        server.setContentRoot(new File("src/main/resources")); //katalogen, der i java prosjekt der settes inn filer som ikke er java fil
 
     }
 
