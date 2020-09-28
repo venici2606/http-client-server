@@ -54,9 +54,14 @@ public class HttpServer {
         } else { //hvis den ikke finner ? så skal den lete i disk
             File file = new File(contentRoot, requestTarget);
             statusCode = "200";
+            String contentType = "text/plain"; //default
+
+            if(file.getName().endsWith(".html")){
+                contentType = "text/html";
+            }
             String response = "HTTP/1.1 " + statusCode + " OK\r\n" +
                     "Content-Length: " + file.length() + "\r\n" +
-                    "Content-Type: text/plain\r\n" +
+                    "Content-Type: " + contentType + "\r\n" +
                     "\r\n";
 
             //skrive 200, lengden på filen, og skrive ut dette pog overføre til klienten
