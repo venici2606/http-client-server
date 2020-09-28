@@ -20,10 +20,11 @@ public class HttpClient {
 
         socket.getOutputStream().write(request.getBytes()); //skriver til rerver
 
-        String line = readLine(socket); // lagt til ved refaktor - extract method leser svaret
-        System.out.println(line); // skriver ut første linje
+        //String line = readLine(socket); // lagt til ved refaktor - extract method leser svaret
+       // System.out.println(line); // skriver ut første linje
 
-        String[] responseLineParts = line.split(" "); // streng med flere biter splitter
+        String responseLine = readLine(socket);
+        String[] responseLineParts = responseLine.split(" "); // streng med flere biter splitter
 
         statusCode = Integer.parseInt(responseLineParts[1]); //gir statuskoden
 
