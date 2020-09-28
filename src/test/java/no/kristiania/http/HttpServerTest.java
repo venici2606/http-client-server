@@ -52,4 +52,17 @@ class HttpServerTest {
         assertEquals(fileContent, client.getResponseBody());
     }
 
+    @Test
+    void shouldReturnCorrectContentType() throws IOException {
+        HttpServer server = new HttpServer(10006);
+        File contentRoot = new File("target/");
+        server.setContentRoot(contentRoot);
+
+        String fileContent = "Hello World " + new Date();
+        Files.writeString(new File(contentRoot, "index.html").toPath(), "<h2>Hello World</h2>");
+
+        HttpClient client = new HttpClient("localhost", 10006, "/index.txt");
+        assertEquals("text/html", client.getResponseHeader("Content-type"));
+    }
+
 }
